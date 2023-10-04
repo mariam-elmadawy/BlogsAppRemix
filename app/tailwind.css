@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn {
+  @apply rounded py-2 px-3 bg-black text-white  hover:shadow-lg hover:bg-slate-900;
+}
+.btn-reverse {
+  @apply rounded py-2 px-3 bg-white text-black  hover:shadow-lg;
+}
+.active {
+  @apply font-bold text-white border-b-2;
+}
+.input {
+  @apply rounded bg-white text-black p-2 focus:border-none focus:bg-gray-200 text-center;
+}
+.label {
+  @apply flex flex-col gap-2 w-full uppercase py-3 tracking-widest;
+}
+
+.btn-delete {
+  @apply rounded py-2 px-3 bg-red-700 text-white hover:shadow-lg hover:bg-red-900;
+}
