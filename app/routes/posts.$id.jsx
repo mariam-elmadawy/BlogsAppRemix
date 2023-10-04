@@ -1,6 +1,6 @@
 import { redirect } from "@remix-run/node";
 import { db } from "../data/db.server";
-import { Link, useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData, Form } from "@remix-run/react";
 
 export const meta = () => {
   return [{ title: "Single Blog" }];
