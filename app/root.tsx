@@ -1,4 +1,3 @@
-import { cssBundleHref } from "@remix-run/css-bundle";
 import type { LinksFunction } from "@remix-run/node";
 import {
   Link,
@@ -9,16 +8,20 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "@remix-run/react";
 import { ReactNode } from "react";
 import { useRouteError, isRouteErrorResponse } from "@remix-run/react";
 import stylesheet from "~/tailwind.css";
-
+import { isLogged } from "./data/sessions.server";
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
-  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
 ];
-
+export async function loader({ request }) {
+  const user = await isLogged(request);
+  const data = { user };
+  return data;
+}
 export default function App() {
   return (
     <html lang="en">
@@ -40,17 +43,28 @@ export default function App() {
   );
 }
 function Layout({ children }: { children: ReactNode }) {
+  const { user } = useLoaderData();
   return (
     <>
-      <nav className="bg-black text-white w-full uppercase tracking-wider px-20 py-4 flex justify-between ">
-        <h1 className="text-2xl">Blogs</h1>
-        <ul className="flex items-center gap-4 text-gray-500">
-          <li>
+      <nav className="bg-black text-white w-full uppercase tracking-wider px-10 md:px-20 py-4 flex justify-between ">
+        <h1 className=" text-xl md:text-3xl">Blogs</h1>
+        <ul className="flex items-center gap-4  text-gray-400">
+          <li className="text-sm">
             <NavLink to="/">Posts</NavLink>
           </li>
-          <li>
-            <NavLink to="/posts/new">New Post</NavLink>
-          </li>
+          {user ? (
+            <li>
+              <form method="post" action="/auth/logout">
+                <button className="btn-gray" type="submit">
+                  Logout {user.username}
+                </button>
+              </form>
+            </li>
+          ) : (
+            <li className="text-sm">
+              <NavLink to="/auth/login">LOGIN</NavLink>
+            </li>
+          )}
         </ul>
       </nav>
       <div>{children}</div>

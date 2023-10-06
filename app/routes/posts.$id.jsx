@@ -1,7 +1,7 @@
 import { redirect } from "@remix-run/node";
 import { db } from "../data/db.server";
 import { Link, useLoaderData, Form } from "@remix-run/react";
-
+import { isLogged } from "../data/sessions.server";
 export const meta = () => {
   return [{ title: "Single Blog" }];
 };
@@ -19,6 +19,7 @@ export async function loader({ params }) {
 //set delete post function
 export async function action({ request, params }) {
   const formData = await request.formData();
+  const user = await isLogged(request);
   if (formData.get("_method") === "delete") {
     const post = await db.post.findUnique({
       where: { id: params.id },
@@ -26,7 +27,10 @@ export async function action({ request, params }) {
     if (!post) {
       throw new Error("post not found");
     }
-    await db.post.delete({ where: { id: params.id } });
+    if (user && post.userId === user.id) {
+      await db.post.delete({ where: { id: params.id } });
+    }
+
     return redirect("/");
   }
 }
@@ -36,7 +40,7 @@ export default function Post() {
   return (
     <div
       className="m-6 rounded-xl p-10
-     mx-auto w-[50vw] bg-gray-100"
+     mx-auto w-[50vw] bg-gray-100 flex flex-col"
     >
       <div className="flex justify-between items-center border-b-2 py-2">
         <h1 className="text-xl">{post.title}</h1>

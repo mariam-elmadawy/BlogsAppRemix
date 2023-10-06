@@ -4,10 +4,18 @@ const prisma = new PrismaClient()
 
 async function main() {
     // ... you will write your Prisma Client queries here
-
+    const mariam = await prisma.User.create({
+        data: {
+            username: 'mariam',
+            // Hash for password - twixrox
+            password:
+                '$2b$10$K7L1OJ45/4Y2nIvhRVpCe.FSmhDdWoXehVzJptJ/op0lSsvqNu/1u',
+        },
+    })
     await Promise.all(
         getPosts().map((post) => {
-            return prisma.post.create({ data: post })
+            const data = { userId: mariam.id, ...post }
+            return prisma.post.create({ data })
         })
     )
 }

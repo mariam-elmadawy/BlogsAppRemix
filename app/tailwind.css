@@ -5,17 +5,17 @@
 .btn {
   @apply rounded py-2 px-3 bg-black text-white  hover:shadow-lg hover:bg-slate-900;
 }
-.btn-reverse {
-  @apply rounded py-2 px-3 bg-white text-black  hover:shadow-lg;
+.btn-gray {
+  @apply rounded py-2 px-3 bg-gray-200 text-black hover:bg-gray-300 hover:shadow-lg;
 }
 .active {
-  @apply font-bold text-white border-b-2;
+  @apply text-white border-b-2;
 }
 .input {
-  @apply rounded bg-white text-black p-2 focus:border-none focus:bg-gray-200 text-center;
+  @apply rounded bg-white text-black p-2 focus:border-none text-center;
 }
 .label {
-  @apply flex flex-col gap-2 w-full uppercase py-3 tracking-widest;
+  @apply flex flex-col gap-2 w-full py-2 tracking-widest;
 }
 
 .btn-delete {
